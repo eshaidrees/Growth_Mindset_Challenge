@@ -1,4 +1,7 @@
-from fileinput import fileno
+import os
+os.system("pip install openpyxl")
+import openpyxl
+
 import streamlit as st
 import pandas as pd
 from io import BytesIO
@@ -23,7 +26,7 @@ if files :
             st.dataframe(df.head())
 
             if st.checkbox(f"Fill Missing values - {file.name}"):
-                df.fileno(df.select_dtypes(include=["number"]).mean(), inplace=True)
+                df.fillna(df.select_dtypes(include=["number"]).mean(), inplace=True)
                 st.success("Missing Values filled with mean")
                 st.dataframe(df.head())
 
@@ -34,11 +37,11 @@ if files :
             if st.checkbox(f"Show Chart - {file.name}") and not df.select_dtypes(include="number").empty:
                 st.bar_chart(df.select_dtypes(include="number").iloc[:, :2])
 
-            format_choise = st.radio(f"Convert {file.name} to:", ["csv", "Excel"], key=file.name)
+            format_choice = st.radio(f"Convert {file.name} to:", ["csv", "Excel"], key=file.name)
 
-            if st.button(f"Download {file.name} as {format_choise}"):
+            if st.button(f"Download {file.name} as {format_choice}"):
                 output = BytesIO()
-                if format_choise == "csv":
+                if format_choice == "csv":
                     df.to_csv(output, index=False)
                     mine = "text/csv"
                     new_name = file.name.replace(ext, "csv")
