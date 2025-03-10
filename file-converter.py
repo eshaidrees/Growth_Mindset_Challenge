@@ -1,3 +1,4 @@
+import openpyxl
 from fileinput import fileno
 import streamlit as st
 import pandas as pd
@@ -23,7 +24,7 @@ if files :
             st.dataframe(df.head())
 
             if st.checkbox(f"Fill Missing values - {file.name}"):
-                df = fileno(df.select_dtypes(include=["number"]).mean(), inplace=True)
+                df.fileno(df.select_dtypes(include=["number"]).mean(), inplace=True)
                 st.success("Missing Values filled with mean")
                 st.dataframe(df.head())
 
